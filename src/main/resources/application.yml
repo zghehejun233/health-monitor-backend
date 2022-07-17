@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    #name: health_monitor  #????
+    url: jdbc:mysql://rm-bp17j4cz3l61l2oax1o.mysql.rds.aliyuncs.com:3306/health_monitor #jdbc:mysql://localhost:3306/healthmonitor #url
+    username: health_monitor #root  #???
+    password: Hm-112358 #123456  #??
+    driver-class-name: com.mysql.cj.jdbc.Driver  #???????
+  jpa:
+    database: MySQL
+    show-sql: true
+    generate-ddl: true
+    hibernate.ddl-auto: update
+
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    # properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    # properties.hibernate.format_sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  mvc:
+    view:
+      prefix: /WEB-INF/view/
+      suffix: .jsp
+  thymeleaf.cache: false
