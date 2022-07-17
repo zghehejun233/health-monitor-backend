@@ -35,15 +35,15 @@ public class UserController {
 
     @RequestMapping(value = "/user/favorites/delete", method = RequestMethod.DELETE, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public Result FavoriteDelete(@RequestParam Integer cid) {
-        if (favoriteRepository.findByCid(cid).size() != 0) ;   //查询获得实体对象
+    public Result<Favorite> FavoriteDelete(@RequestParam Integer cid) {
+        favoriteRepository.findByCid(cid);//查询获得实体对象
         favoriteRepository.delete(favoriteRepository.findByCid(cid).get(0));
-        return new Result().success();
+        return new Result<Favorite>().success();
     }
 
     @RequestMapping(value = "/user/favorites/add", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public Result FavoriteAdd(@RequestParam Integer cid) {
+    public Result<Favorite> FavoriteAdd(@RequestParam Integer cid) {
         Favorite s = new Favorite();
         Integer id = favoriteRepository.getMaxId();  // 查询最大的id
         if (id == null)
@@ -55,30 +55,35 @@ public class UserController {
         s.setCname(cookBookRepository.findByCid(cid).get(0).getCname());
         s.setHealth_score(cookBookRepository.findByCid(cid).get(0).getHealth_store());
         favoriteRepository.save(s);
-        return new Result().success();
+        return new Result<Favorite>().success();
     }
 
     @RequestMapping(value = "/user/info", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public Result<User> InfoAdd(@RequestParam Integer uid) {
 
-        return new Result().success(userRepository.findByUid(uid).get(0));
+        return new Result<User>().success(userRepository.findByUid(uid).get(0));
     }
 
     @RequestMapping(value = "/user/name", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public Result NameUpdate(@RequestBody User user) {
+    public Result<User> NameUpdate(@RequestBody User user) {
         Optional<User> op = userRepository.findById(user.getUid());  //查询对应数据库中主键为id的值的实体对象
-        User s = op.get();
-        s.setUsername(user.getUsername());
-        userRepository.save(s);
-        return new Result().success();
+        if (op.isPresent()) {
+            User s = op.get();
+            s.setUsername(user.getUsername());
+            userRepository.save(s);
+            return new Result<User>().success();
+        } else {
+            return new Result<User>().error();
+        }
+
     }
 
     @RequestMapping(value = "/user/avatar", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public Result AvartarUpdate(@RequestBody User user) {
+    public Result<User> AvatarUpdate(@RequestBody User user) {
         //未完成
-        return new Result().success();
+        return new Result<User>().success();
     }
 }

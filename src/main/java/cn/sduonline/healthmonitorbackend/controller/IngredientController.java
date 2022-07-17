@@ -22,15 +22,14 @@ import java.util.regex.Pattern;
  * Created By GuoChao on 2022/7/17 23:04
  */
 
-
 @Controller
 public class IngredientController {
     @Autowired
     IngredientRepository ingredientRepository;
 
-    @RequestMapping(value = "/Ingredient/Delete",method = RequestMethod.DELETE,produces ={"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/Ingredient/Delete", method = RequestMethod.DELETE, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public Result IngredientDelete(@RequestParam Integer iid)  {
+    public Result<Ingredient> IngredientDelete(@RequestParam Integer iid) {
         Ingredient s = null;
         Optional<Ingredient> op;
         if (iid != null) {
@@ -42,19 +41,19 @@ public class IngredientController {
         if (s != null) {
             ingredientRepository.delete(s);    //数据库永久删除
         }
-        return new Result().success();
+        return new Result<Ingredient>().success();
 
     }
 
-    @RequestMapping(value="/Ingredient/Get",method = RequestMethod.GET,produces ={"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/Ingredient/Get", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public  Result<Ingredient> IngredientQuery(@RequestParam Integer iid)  {
+    public Result<Ingredient> IngredientQuery(@RequestParam Integer iid) {
         return new Result<Ingredient>().success(ingredientRepository.findByIid(iid).get(0));
     }
 
-    @RequestMapping(value = "/Ingredient/Add", method = RequestMethod.POST,produces ={"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/Ingredient/Add", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public  Result IngredientAdd(@RequestParam String code) throws IOException {
+    public Result<Ingredient> IngredientAdd(@RequestParam String code) throws IOException {
         String html;
         String url = "https://www.meishichina.com/YuanLiao/" + code + "/useful/";
         html = OkhttpUtil.doGet(url);
@@ -100,22 +99,20 @@ public class IngredientController {
             ingredientRepository.save(s);
 
         }
-        return new Result().success();
+        return new Result<Ingredient>().success();
     }
-    @RequestMapping(value="/Ingredient/GetList",method = RequestMethod.GET,produces ={"application/json;charset=UTF-8"})
+
+    @RequestMapping(value = "/Ingredient/GetList", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public  Result<Ingredient> IngredientListGet(@RequestParam Integer page_size,@RequestParam Integer page, @RequestParam(defaultValue = "",required = false) String query)  {
+    public Result<Ingredient> IngredientListGet(@RequestParam Integer page_size, @RequestParam Integer page, @RequestParam(defaultValue = "", required = false) String query) {
         PageRequest pageRequest = PageRequest.of(page, page_size);
         Page<Ingredient> markerPage = ingredientRepository.findAll(pageRequest);
           /*  for (int i = 0; i < markerPage.getContent().size(); i++) {
                 System.out.println(markerPage.getContent().get(i));
                 System.out.println(markerPage.getTotalElements());
             }*/
-        if (markerPage.getContent()!=null) {
-            return new Result<Ingredient>().success(markerPage.getContent());
-        }else {
-            return new Result().error();
-        }
+        markerPage.getContent();
+        return new Result<Ingredient>().success(markerPage.getContent());
     }
 }
 

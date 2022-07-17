@@ -21,11 +21,11 @@ public class LoginController {
     UserRepository userRepository;
     @RequestMapping(value = "/login", method = POST)
     @ResponseBody
-    public Result login(@RequestBody User user)  {
+    public Result<User> login(@RequestBody User user)  {
         if(userRepository.findByUsernameAndPassword(user.getUsername(),user.getPassword()).size()==0)
-            return new Result().error();
+            return new Result<User>().error();
         else
-            return new Result().success();
+            return new Result<User>().success();
     }
 
 

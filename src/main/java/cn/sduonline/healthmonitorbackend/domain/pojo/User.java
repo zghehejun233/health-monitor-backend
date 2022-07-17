@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "user",
-        uniqueConstraints = {
+        uniqueConstraints = {@UniqueConstraint(columnNames = "username")
         })
 public class User {
     @Id

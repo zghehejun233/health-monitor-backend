@@ -10,9 +10,8 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "dishes",
-        uniqueConstraints = {
-        })
+@Table(name = "dishes"
+)
 @Getter
 @Setter
 public class Dishes {
