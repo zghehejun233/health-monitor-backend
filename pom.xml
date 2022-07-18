@@ -11,8 +11,8 @@
     <groupId>com.example</groupId>
     <artifactId>healthmonitor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>healthmonitor</name>
-    <description>healthmonitor</description>
+    <name>health monitor</name>
+    <description>health monitor</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -97,6 +97,11 @@
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
             <version>3.23.1-GA</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
